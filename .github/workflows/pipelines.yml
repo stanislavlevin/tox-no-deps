@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    branches: [ main ]
+  schedule:
+    - cron: '0 7 * * 1-5'
+
+jobs:
+  lint:
+    name: Lint code base
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+
+    steps:
+    - uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install host dependencies
+      run: |
+        set -e
+        python --version
+        python -m pip install --upgrade pip
+        python -m pip install --user --force \
+            setuptools_scm \
+            tox
+
+    - uses: actions/checkout@v2
+
+    - name: Pylint
+      run: |
+        python -m tox -e pylint -vv
+    - name: Black
+      run: |
+        python -m tox -e blackcheck -vv
+
+  tests:
+    name: Run tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+
+    steps:
+    - uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install host dependencies
+      run: |
+        set -e
+        python --version
+        python -m pip install --upgrade pip
+        python -m pip install --user --force \
+            setuptools_scm \
+            tox
+
+    - uses: actions/checkout@v2
+
+    - name: tests
+      run: |
+        python3 --version
+        python3 -m tox -e py -vv
