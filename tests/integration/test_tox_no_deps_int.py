@@ -250,3 +250,45 @@ def test_deps_from_env_skipped(initproj, cmd):
 
     result = cmd("--no-deps")
     result.assert_success()
+
+
+def test_package_deps_required(initproj, cmd):
+    """Plugin doesn't mangle package deps"""
+    initproj(
+        "pkg123",
+        filedefs={
+            "setup.cfg": """\
+                [metadata]
+                name = pkg123
+                description = pkg123 project
+                version = 0.0.1
+                license = MIT
+                platforms = unix
+
+                [options]
+                packages = find:
+                install_requires =
+                    somenotexisted_package == 9.9.9
+
+                [options.packages.find]
+                where = .
+            """,
+            "setup.py": """\
+                from setuptools import setup
+                if __name__ == "__main__":
+                    setup()
+            """,
+            "tox.ini": """
+                [tox]
+                [testenv]
+                usedevelop=true
+                commands=python -c "print('test')"
+            """,
+        },
+    )
+
+    result = cmd("--no-deps")
+    result.assert_fail()
+    assert (
+        "No matching distribution found for somenotexisted_package==9.9.9" in result.out
+    )
