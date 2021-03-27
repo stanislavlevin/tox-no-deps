@@ -4,6 +4,9 @@ import subprocess
 
 import pytest
 
+NO_DEPS_SKIP_TEMPLATE = "no-deps plugin: deps: '{}' will be skipped for 'python'"
+NO_EXTRAS_SKIP_TEMPLATE = "no-deps plugin: extras: '{}' will be skipped for 'python'"
+
 
 def test_no_plugin_usage(initproj, cmd):
     """Plugin doesn't break regular tox"""
@@ -105,8 +108,14 @@ def test_deps_skipped(initproj, cmd):
         },
     )
 
-    result = cmd("--no-deps")
+    result = cmd("--no-deps", "-v")
     result.assert_success()
+    assert (
+        NO_DEPS_SKIP_TEMPLATE.format(
+            "[somenotexisted_package1 == 9.9.9, somenotexisted_package2]"
+        )
+        in result.outlines
+    )
 
 
 def test_extras_skipped(initproj, cmd):
@@ -148,8 +157,9 @@ def test_extras_skipped(initproj, cmd):
         },
     )
 
-    result = cmd("--no-deps")
+    result = cmd("--no-deps", "-v")
     result.assert_success()
+    assert NO_EXTRAS_SKIP_TEMPLATE.format("['tests']") in result.outlines
 
 
 def test_deps_extras_skipped(initproj, cmd):
@@ -194,8 +204,15 @@ def test_deps_extras_skipped(initproj, cmd):
         },
     )
 
-    result = cmd("--no-deps")
+    result = cmd("--no-deps", "-v")
     result.assert_success()
+    assert (
+        NO_DEPS_SKIP_TEMPLATE.format(
+            "[somenotexisted_package1 == 9.9.9, somenotexisted_package2]"
+        )
+        in result.outlines
+    )
+    assert NO_EXTRAS_SKIP_TEMPLATE.format("['tests']") in result.outlines
 
 
 def test_deps_from_file_skipped(initproj, cmd):
@@ -217,8 +234,12 @@ def test_deps_from_file_skipped(initproj, cmd):
         },
     )
 
-    result = cmd("--no-deps")
+    result = cmd("--no-deps", "-v")
     result.assert_success()
+    assert (
+        NO_DEPS_SKIP_TEMPLATE.format("[-rrequirements.txt, somenotexisted_package2]")
+        in result.outlines
+    )
 
 
 def test_deps_from_env_skipped(initproj, cmd):
@@ -248,8 +269,15 @@ def test_deps_from_env_skipped(initproj, cmd):
         },
     )
 
-    result = cmd("--no-deps")
+    result = cmd("--no-deps", "-v")
     result.assert_success()
+    assert (
+        NO_DEPS_SKIP_TEMPLATE.format(
+            "[-rrequirements.txt, somenotexisted_package3, -rrequirements1.txt,"
+            " somenotexisted_package4]"
+        )
+        in result.outlines
+    )
 
 
 def test_package_deps_required(initproj, cmd):
