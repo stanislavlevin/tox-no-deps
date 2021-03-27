@@ -196,3 +196,57 @@ def test_deps_extras_skipped(initproj, cmd):
 
     result = cmd("--no-deps")
     result.assert_success()
+
+
+def test_deps_from_file_skipped(initproj, cmd):
+    initproj(
+        "pkg123",
+        filedefs={
+            "requirements.txt": """\
+                somenotexisted_package1 == 9.9.9
+            """,
+            "tox.ini": """
+                [tox]
+                [testenv]
+                deps =
+                    -rrequirements.txt
+                    somenotexisted_package2
+                usedevelop=true
+                commands=python -c "print('test')"
+            """,
+        },
+    )
+
+    result = cmd("--no-deps")
+    result.assert_success()
+
+
+def test_deps_from_env_skipped(initproj, cmd):
+    initproj(
+        "pkg123",
+        filedefs={
+            "requirements.txt": """\
+                somenotexisted_package1 == 9.9.9
+            """,
+            "requirements1.txt": """\
+                somenotexisted_package2 == 9.9.9
+            """,
+            "tox.ini": """
+                [tox]
+                [base]
+                deps =
+                    -rrequirements.txt
+                    somenotexisted_package3
+                [testenv]
+                deps =
+                    {[base]deps}
+                    -rrequirements1.txt
+                    somenotexisted_package4
+                usedevelop=true
+                commands=python -c "print('test')"
+            """,
+        },
+    )
+
+    result = cmd("--no-deps")
+    result.assert_success()
