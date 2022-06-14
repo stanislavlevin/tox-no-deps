@@ -42,6 +42,7 @@ jobs:
 
   tests:
     name: Run tests
+    needs: [lint]
     runs-on: ubuntu-latest
     strategy:
       matrix:
