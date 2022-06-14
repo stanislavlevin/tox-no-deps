@@ -10,5 +10,4 @@
 /dist
 /.*_cache
 /pip-wheel-metadata
-/src/tox_no_deps/version.py
 /build
