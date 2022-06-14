@@ -1,9 +1,3 @@
-import os
-import sys
-import subprocess
-
-import pytest
-
 NO_DEPS_SKIP_TEMPLATE = "no-deps plugin: deps: '{}' will be skipped for 'python'"
 NO_EXTRAS_SKIP_TEMPLATE = "no-deps plugin: extras: '{}' will be skipped for 'python'"
 
