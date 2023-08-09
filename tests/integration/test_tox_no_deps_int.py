@@ -74,7 +74,7 @@ def test_no_plugin_usage_extras(tox_project, tox):
     result = tox("-vv", cwd=project.location)
     result.assert_fail()
     assert (
-        "No matching distribution found for somenotexisted_package1==9.9.9\n"
+        "No matching distribution found for somenotexisted_package1==9.9.9"
     ) in result.stdout_text
 
 
