@@ -19,7 +19,7 @@ jobs:
         python-version: ['3.8','3.9','3.10','3.11']
 
     steps:
-    - uses: actions/setup-python@v2
+    - uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install host dependencies
@@ -30,7 +30,7 @@ jobs:
         python -m pip install --user --force \
             'tox < 4'
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Pylint
       run: |
@@ -48,7 +48,7 @@ jobs:
         python-version: ['3.8','3.9','3.10','3.11']
 
     steps:
-    - uses: actions/setup-python@v2
+    - uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install host dependencies
@@ -59,7 +59,7 @@ jobs:
         python -m pip install --user --force \
             'tox < 4'
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: tests with coverage
       run: |
