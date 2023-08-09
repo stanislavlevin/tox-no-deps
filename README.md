@@ -6,6 +6,11 @@ Tox environments. The dependencies of tested package if any are not touched.
 This is mostly used for testing purposes in ALTLinux during RPM build of Python
 packages to run integration tests against the repository packages.
 
+Note
+-----
+
+Only `tox < 4` is supported for now.
+
 Usage
 -----
 
