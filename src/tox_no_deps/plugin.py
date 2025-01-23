@@ -1,41 +1,32 @@
-from tox import reporter
-import pluggy
+import logging
+
+from tox.config.loader.memory import MemoryLoader
+from tox.plugin import impl
 
 
-hookimpl = pluggy.HookimplMarker("tox")
+logger = logging.getLogger(__name__)
 
 
-@hookimpl
-def tox_addoption(parser):
+@impl
+def tox_add_option(parser):
     parser.add_argument(
         "--no-deps",
         action="store_true",
-        help="Skip the installation of deps and extras",
+        help="skip the installation of test env's deps",
     )
 
 
-@hookimpl
-def tox_configure(config):
-    if not config.option.no_deps:
+@impl
+def tox_add_env_config(env_conf, state):
+    if not all(
+        (
+            state.conf.options.no_deps,
+            "runner" in env_conf,  # only tests environments
+        )
+    ):
         return
 
-    for envconfig in config.envconfigs.values():
-        if not isinstance(envconfig.deps, list):
-            raise TypeError("Not supported deps type", envconfig.deps)
+    logger.info("relaxing dependencies for test env: %s", env_conf.env_name)
 
-        if envconfig.deps:
-            reporter.verbosity1(
-                f"no-deps plugin: deps: '{envconfig.deps}' will be skipped for"
-                f" '{envconfig.envname}'"
-            )
-            envconfig.deps = []
-
-        if not isinstance(envconfig.extras, list):
-            raise TypeError("Not supported extras type", envconfig.extras)
-
-        if envconfig.extras:
-            reporter.verbosity1(
-                f"no-deps plugin: extras: '{envconfig.extras}' will be skipped"
-                f" for '{envconfig.envname}'"
-            )
-            envconfig.extras = []
+    override = {"deps": [], "extras": [], "dependency_groups": []}
+    env_conf.loaders.insert(0, MemoryLoader(**override))
