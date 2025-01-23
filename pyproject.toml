@@ -1,12 +1,58 @@
 [build-system]
-requires = [
-    "setuptools >= 42.0",
-    "wheel",
-]
+requires = ["setuptools >= 61.0"]
 build-backend = "setuptools.build_meta"
 
+[project]
+name = "tox-no-deps"
+description = "Skip an installation of dependencies of tox test environments"
+requires-python = ">= 3.9"
+dependencies = [
+  "tox > 4",
+]
+dynamic = ["version"]
+readme = "README.md"
+keywords = ["virtual", "environments", "isolated", "testing"]
+authors = [
+  {name = "Stanislav Levin"},
+]
+maintainers = [
+  {name = "Stanislav Levin"},
+]
+license = {text = "MIT"}
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Framework :: tox",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: Unix",
+  "Topic :: Software Development :: Testing",
+  "Topic :: Software Development :: Libraries",
+  "Topic :: Utilities",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+
+[project.urls]
+Homepage = "https://github.com/stanislavlevin/tox-no-deps"
+Repository = "https://github.com/stanislavlevin/tox-no-deps"
+Issues = "https://github.com/stanislavlevin/tox-no-deps/issues"
+
+[tool.setuptools.dynamic]
+version = {attr = "tox_no_deps.version.version"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.entry-points.tox]
+tox_no_deps = "tox_no_deps.plugin"
+
 [tool.black]
-line-length = 88
+line-length = 80
 
 [tool.pytest.ini_options]
 addopts = "-ra --showlocals"
