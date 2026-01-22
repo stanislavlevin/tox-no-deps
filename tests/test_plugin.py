@@ -36,9 +36,7 @@ def test_plugin_usage_deps(tox_project):
     """
     project = tox_project()
     env_name = "py"
-    project.contents[
-        "tox.ini"
-    ] = f"""\
+    project.contents["tox.ini"] = f"""\
         [tox]
         env_list = {env_name}
         [testenv]
@@ -71,9 +69,7 @@ def test_plugin_usage_extras(tox_project):
     """
     project = tox_project()
     env_name = "py"
-    project.contents[
-        "pyproject.toml"
-    ]: f"""\
+    project.contents["pyproject.toml"] = f"""\
         [project]
         name = "{project.name}"
         version = "1.0"
@@ -84,9 +80,7 @@ def test_plugin_usage_extras(tox_project):
           "bar2_bar2",
         ]
         """
-    project.contents[
-        "tox.ini"
-    ] = f"""\
+    project.contents["tox.ini"] = f"""\
         [tox]
         env_list = {env_name}
         [testenv]
@@ -117,9 +111,7 @@ def test_plugin_usage_dependency_groups(tox_project):
     """
     project = tox_project()
     env_name = "py"
-    project.contents[
-        "pyproject.toml"
-    ]: f"""\
+    project.contents["pyproject.toml"] = f"""\
         [project]
         name = "{project.name}"
         version = "1.0"
@@ -130,9 +122,7 @@ def test_plugin_usage_dependency_groups(tox_project):
            "bar2_bar2",
         ]
         """
-    project.contents[
-        "tox.ini"
-    ] = f"""\
+    project.contents["tox.ini"] = f"""\
         [tox]
         env_list = {env_name}
         [testenv]
@@ -161,9 +151,7 @@ def test_plugin_usage_no_deps(tox_project):
     """
     project = tox_project()
     env_name = "py"
-    project.contents[
-        "tox.ini"
-    ] = f"""\
+    project.contents["tox.ini"] = f"""\
         [tox]
         env_list = {env_name}
         [testenv]
@@ -191,9 +179,7 @@ def test_no_plugin_usage(tox_project):
     """
     project = tox_project()
     env_name = "py"
-    project.contents[
-        "tox.ini"
-    ] = f"""\
+    project.contents["tox.ini"] = f"""\
         [tox]
         env_list = {env_name}
         [testenv]
