@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "tox-no-deps"
 description = "Skip an installation of dependencies of tox test environments"
-requires-python = ">= 3.9"
+requires-python = ">= 3.10"
 dependencies = [
   "tox > 4",
 ]
@@ -30,7 +30,6 @@ classifiers = [
   "Topic :: Utilities",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
