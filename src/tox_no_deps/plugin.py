@@ -3,7 +3,6 @@ import logging
 from tox.config.loader.memory import MemoryLoader
 from tox.plugin import impl
 
-
 logger = logging.getLogger(__name__)
 
 
