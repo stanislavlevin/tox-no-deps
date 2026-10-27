@@ -64,6 +64,9 @@ filterwarnings = [
 source = [
     "tox_no_deps",
 ]
+patch = [
+    "subprocess",
+]
 
 [tool.coverage.report]
 skip_covered = false
